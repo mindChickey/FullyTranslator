@@ -1,0 +1,13 @@
+{
+  "name": "fully-translator",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsdom": "^22.0.0",
+    "undefined": "^undefined",
+    "xpath": "^0.0.32",
+    "xpath-html": "^1.0.3"
+  }
+}

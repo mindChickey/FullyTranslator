@@ -1,0 +1,30 @@
+
+{
+  "name": "Fully Translator",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "Quickly translate fully page",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["contextMenus", "storage"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "commands": {
+    "run-translate": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "Translate"
+    }
+  },
+	"action": {
+		"default_title": "Fully Translator",
+		"default_popup": "popup.html"
+  }
+}

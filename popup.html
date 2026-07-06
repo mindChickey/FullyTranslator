@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<body>
+  <div class="labeltext">translator:</div>
+  <select id="translatorSelect">
+    <option value="google">Google</option>
+    <!--
+    <option value="youdao">有道</option>
+    --> 
+  </select>
+
+  <div class="labeltext">target language:</div>
+  <select id="languageSelect"></select>
+
+  <button id="translateButton">translate page</button>
+
+  <script src="popup.js"></script>
+</body>
+
+<style type="text/css">
+  body {
+    background-color: #FEFEFE;
+    padding: 4px;
+  }
+  .labeltext {
+    margin-bottom: 0.2rem;
+  }
+
+  select {
+    width: 160px;
+  }
+
+</style>
+
+</html>
