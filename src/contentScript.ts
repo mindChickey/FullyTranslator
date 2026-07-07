@@ -1,3 +1,4 @@
+import { Config, getConfig } from "./config"
 import { matchURL } from "./matchURL"
 import { startMultiObserve } from "./observe"
 
@@ -14,26 +15,25 @@ function copyAllStyles(source: Element, target: HTMLElement) {
   })
 }
 
-async function translateAndPush1(element: Element): Promise<Element> {
-  const text = element.textContent || ''
-  const translated = await translate(text)
-  const clone = element.cloneNode(true) as HTMLElement
-  
-  clone.removeAttribute('id')
-  copyAllStyles(element, clone)
-  
-  clone.textContent = translated
-  clone.style.backgroundColor = "#e2f0d9"
-  element.insertAdjacentElement("afterend", clone)
-  return clone
-} 
+function cloneElement(element: Element): Element {
+  let element1 = element.cloneNode(true) as HTMLElement
+  element1.removeAttribute('id')
+  copyAllStyles(element, element1)
+  element1.style.backgroundColor = "#e2f0d9"
+  return element1
+}
 
-let elementMap = new WeakMap<Element, Element>();
+let elementMap = new WeakMap<Element, Element>()
+let revElementMap = new WeakMap<Element, Element>()
 
 async function translateAndPush(element: Element): Promise<void> {
-  if(!elementMap.has(element)) {
-    let element1 = await translateAndPush1(element)
-    elementMap.set(element, element1);
+  if(!elementMap.has(element) && !revElementMap.has(element)) {
+    let translated = await translate(element.textContent)
+    let element1 = cloneElement(element)
+    element1.textContent = translated
+    elementMap.set(element, element1)
+    revElementMap.set(element1, element)
+    element.insertAdjacentElement("afterend", element1)
   }
 }
 
@@ -41,7 +41,8 @@ async function translateAndPush(element: Element): Promise<void> {
 // })
 
 
-function executeBestRule(url: string): void {
+function executeBestRule() {
+  let url = window.location.href
   let matched = matchURL(url)
   if (matched) {
     let { selectors } = matched
@@ -53,6 +54,12 @@ function executeBestRule(url: string): void {
   }
 }
 
+function execute({startup}:Config){
+  if(startup){
+    executeBestRule()
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  executeBestRule(window.location.href)
+  getConfig(execute)
 })

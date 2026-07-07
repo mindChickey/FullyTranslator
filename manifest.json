@@ -17,10 +17,7 @@
   ],
   "commands": {
     "run-translate": {
-      "description": "Translate",
-      "suggested_key": {
-        "default": "Alt+T"
-      }
+      "description": "Translate Page"
     }
   },
 	"action": {
