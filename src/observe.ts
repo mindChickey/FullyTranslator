@@ -14,12 +14,14 @@ function extractBySelectors(mutations: MutationRecord[], selectors: string[]): E
     .flatMap((node) => matchAnySelector(node, selectors))
 }
 
-export
-function startMultiObserve(selectors: string[], callback: (el: Element) => void): MutationObserver {
+export function newMultiObserve(selectors: string[], callback: (el: Element) => void): MutationObserver {
   const observer = new MutationObserver((mutations) => {
     const targets = extractBySelectors(mutations, selectors)
     targets.forEach(callback)
   })
-  observer.observe(document.body, { childList: true, subtree: true })
   return observer
+}
+
+export function startMultiObserve(observer: MutationObserver){
+  observer.observe(document.body, { childList: true, subtree: true })
 }
