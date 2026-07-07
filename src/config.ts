@@ -8,6 +8,6 @@ export type Config = {
 export const defaultLanguage = 'en'
 export const defaultConfig: Config = { translator: 'google', language: defaultLanguage, startup: true }
 
-export function getConfig(callback: (config: Config) => void){
-  chrome.storage.sync.get(defaultConfig, callback)
+export async function getConfig(){
+  return chrome.storage.sync.get<Config>(defaultConfig)
 }

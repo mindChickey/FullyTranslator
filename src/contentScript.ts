@@ -54,12 +54,9 @@ function executeBestRule() {
   }
 }
 
-function execute({startup}:Config){
+document.addEventListener('DOMContentLoaded', async () => {
+  let { startup } = await getConfig()
   if(startup){
     executeBestRule()
   }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  getConfig(execute)
 })

@@ -13,6 +13,7 @@ function createOption(item: LangItem): HTMLOptionElement {
 }
 
 function updateSelect({ translator, language, startup }: Config): void {
+  startupCheckBox.checked = startup
   translatorSelect.value = translator
   const items = languages[translator] || []
   const children = items.map(createOption)
@@ -27,8 +28,6 @@ function updateSelect({ translator, language, startup }: Config): void {
   }
 }
 
-getConfig(updateSelect)
-
 function updateConfig(){
   const config: Config = { 
     translator: translatorSelect.value, 
@@ -42,7 +41,7 @@ function updateConfig(){
   }
 }
 
-translatorSelect.onchange = () => {
+function translatorChangle() {
   const config: Config = { 
     translator: translatorSelect.value, 
     language: languageSelect.value, 
@@ -52,5 +51,12 @@ translatorSelect.onchange = () => {
   updateSelect(config)
 }
 
-languageSelect.onchange = updateConfig
-startupCheckBox.onchange = updateConfig
+async function main(){
+  languageSelect.onchange = updateConfig
+  startupCheckBox.onchange = updateConfig
+  translatorSelect.onchange = translatorChangle
+  let config = await getConfig()
+  updateSelect(config)
+}
+
+main()

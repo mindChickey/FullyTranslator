@@ -46,11 +46,12 @@ chrome.commands.onCommand.addListener((command, tab) => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.kind === 'translate') {
-    async function callback({ translator, language }: Config) {
+    async function f() {
+      let { translator, language } = await getConfig()
       const res = await translateMap[translator]( 'auto', language, request.text)
       sendResponse(res)
     }
-    getConfig(callback)
+    f()
   }
   return true
 })
