@@ -5,22 +5,22 @@
   "manifest_version": 3,
   "description": "Quickly translate fully page",
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "public/background.js"
   },
   "permissions": ["contextMenus", "storage"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["contentScript.js"],
+      "js": ["public/contentScript.js"],
       "run_at": "document_start"
     }
   ],
   "commands": {
     "run-translate": {
+      "description": "Translate",
       "suggested_key": {
         "default": "Alt+T"
-      },
-      "description": "Translate"
+      }
     }
   },
 	"action": {

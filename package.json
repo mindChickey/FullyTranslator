@@ -4,10 +4,13 @@
   "description": "",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "watch": "bun build ./src/background.ts ./src/contentScript.ts ./src/popup.ts --outdir ./public --target browser --watch"
+  },
   "dependencies": {
-    "jsdom": "^22.0.0",
-    "undefined": "^undefined",
-    "xpath": "^0.0.32",
-    "xpath-html": "^1.0.3"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.23",
+    "@types/chrome": "^0.1.19"
   }
 }
