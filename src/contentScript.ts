@@ -60,3 +60,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     executeBestRule()
   }
 })
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.kind === "open") {
+    console.log("open")
+  } else {
+    console.log("close")
+  }
+})

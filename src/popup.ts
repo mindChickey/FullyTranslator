@@ -1,4 +1,4 @@
-import { Config, defaultLanguage, getConfig } from "./config"
+import { Config, defaultLanguage, getConfig, sendTurnMessage } from "./config"
 import { LangItem, languages } from "./language"
 
 const translatorSelect = document.getElementById("translatorSelect") as HTMLSelectElement
@@ -12,7 +12,7 @@ function createOption(item: LangItem): HTMLOptionElement {
   return option
 }
 
-function updateSelect({ translator, language, startup }: Config): void {
+async function updateSelect({ translator, language, startup }: Config) {
   startupCheckBox.checked = startup
   translatorSelect.value = translator
   const items = languages[translator] || []
@@ -24,37 +24,39 @@ function updateSelect({ translator, language, startup }: Config): void {
     languageSelect.value = language
   } else {
     languageSelect.value = defaultLanguage
-    chrome.storage.sync.set({ translator, language: defaultLanguage, startup })
+    await chrome.storage.sync.set({ translator, language: defaultLanguage, startup })
   }
 }
 
-function updateConfig(){
+async function updateConfig(){
   const config: Config = { 
     translator: translatorSelect.value, 
     language: languageSelect.value, 
     startup: startupCheckBox.checked
   }
-  chrome.storage.sync.set(config)
-
-  if(startupCheckBox.checked){
-  } else {
-  }
+  await chrome.storage.sync.set(config)
+  return config
 }
 
-function translatorChangle() {
-  const config: Config = { 
-    translator: translatorSelect.value, 
-    language: languageSelect.value, 
-    startup: startupCheckBox.checked
-  }
-  chrome.storage.sync.set(config)
+async function translatorChange() {
+  let config = await updateConfig()
   updateSelect(config)
 }
 
+async function languageChange() {
+  let config = await updateConfig()
+}
+
+async function startupChange() {
+  let { startup } = await updateConfig()
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+  await sendTurnMessage(tab, startup)
+}
+
 async function main(){
-  languageSelect.onchange = updateConfig
-  startupCheckBox.onchange = updateConfig
-  translatorSelect.onchange = translatorChangle
+  languageSelect.onchange = languageChange
+  startupCheckBox.onchange = startupChange
+  translatorSelect.onchange = translatorChange
   let config = await getConfig()
   updateSelect(config)
 }

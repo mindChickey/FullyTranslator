@@ -1,4 +1,4 @@
-import { Config, getConfig } from "./config"
+import { getConfig, reverseStartup } from "./config"
 
 type TranslateFn = (sl: string, tl: string, text: string) => Promise<string | undefined>
 
@@ -32,15 +32,15 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 })
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
-  if (info.menuItemId === "translatePage" && tab?.id !== undefined) {
-    chrome.tabs.sendMessage(tab.id, {})
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (info.menuItemId === "translatePage"){
+    await reverseStartup(tab)
   }
 })
 
-chrome.commands.onCommand.addListener((command, tab) => {
-  if (command === "run-translate" && tab?.id !== undefined) {
-    chrome.tabs.sendMessage(tab.id, {})
+chrome.commands.onCommand.addListener(async (command, tab) => {
+  if (command === "run-translate"){
+    await reverseStartup(tab)
   }
 })
 
