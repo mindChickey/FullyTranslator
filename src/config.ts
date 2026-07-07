@@ -1,4 +1,3 @@
-import { LangItem, languages } from "./language"
 
 export type Config = {
   translator: string

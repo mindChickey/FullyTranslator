@@ -10,6 +10,7 @@ const rules: Rule[] = [
   { pattern: "https://lldb.llvm.org/*", selectors: ["p", "h1"] },
   { pattern: "https://medium.com*", selectors: ["h2", "h3"] },
   { pattern: "https://www.infoq.cn*", selectors: ["span"] },
+  { pattern: "file://*", selectors: ["div"] },
 ]
 
 function matchRegExp(url: string, rule: Rule): boolean {
