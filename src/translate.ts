@@ -1,25 +1,31 @@
 
 import { TranslateResultT } from "./types"
 
-export async function detectLanguage(text: string) {
-  let LanguageDetector = (window as any).LanguageDetector
-  if (!LanguageDetector) return null
-
-  let availability = await LanguageDetector.availability()
-  if (availability === 'no') return null
-
-  let detector = await LanguageDetector.create()
-  let results = await detector.detect(text)
-
-  return results?.[0]?.detectedLanguage || null
-}
-
-async function translateText(srcLang: string, targetLang: string, text: string) {
+async function makeTranslator(sourceLanguage: string, targetLanguage: string){
   let Translator = (window as any).Translator
   if (!Translator) throw new Error('Translator API not available')
 
-  let translator = await Translator.create({ sourceLanguage: srcLang, targetLanguage: targetLang })
+  let translator = await Translator.create({ sourceLanguage, targetLanguage })
   if (translator.ready) await translator.ready
+  return translator
+}
+
+let translatorMap: {[key: string]: any} = {}
+
+async function getTranslator(sourceLanguage: string, targetLanguage: string){
+  let key = `${sourceLanguage} ${targetLanguage}`
+  let translator = translatorMap[key]
+  if(translator){
+    return translator
+  } else {
+    let t1 = await makeTranslator(sourceLanguage, targetLanguage)
+    translatorMap[key] = t1
+    return t1
+  }
+}
+
+async function translateText(srcLang: string, targetLang: string, text: string) {
+  let translator = await getTranslator(srcLang, targetLang)
   return await translator.translate(text)
 }
 

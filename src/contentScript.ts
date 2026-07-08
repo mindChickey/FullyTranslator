@@ -1,7 +1,8 @@
 import { Config, getConfig } from "./config"
+import { detectLanguage, initLanguageDetector } from "./langdetect"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
-import { detectLanguage, translate } from "./translate"
+import { translate } from "./translate"
 import { TranslateResultT } from "./types"
 import { makeElement } from "./utils"
 
@@ -18,14 +19,18 @@ function pushNewElement(element: Element, translateResult: TranslateResultT) {
 }
 
 async function translateAndPush(element: Element): Promise<void> {
-  if(!elementMap.has(element) && !revElementMap.has(element)) {
-    let srcText = element.textContent
-    let srcLang = await detectLanguage(srcText)
-    let { language } = await getConfig()
-    if(srcLang !== language){
-      let translateResult = await translate(srcLang, language, srcText)
-      pushNewElement(element, translateResult)
+  try {
+    if(!elementMap.has(element) && !revElementMap.has(element)) {
+      let srcText = element.textContent
+      let srcLang = await detectLanguage(srcText)
+      let { language } = await getConfig()
+      if(srcLang !== language){
+        let translateResult = await translate(srcLang, language, srcText)
+        pushNewElement(element, translateResult)
+      }
     }
+  } catch(err){
+    console.log("qqqqqqqqqqqqq", err)
   }
 }
 
@@ -67,6 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (matched) {
     selectors = matched.selectors
     observer = newMultiObserve(selectors, translateAndPush)
+    await initLanguageDetector()
  
     let { startup } = await getConfig()
     if(startup){
