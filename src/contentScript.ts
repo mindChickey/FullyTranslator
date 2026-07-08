@@ -1,7 +1,8 @@
 import { Config, getConfig } from "./config"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
-import { translate } from "./translate"
+import { detectLanguage, translate } from "./translate"
+import { TranslateResultT } from "./types"
 import { makeElement } from "./utils"
 
 let elementMap = new Map<Element, Element>()
@@ -9,13 +10,22 @@ let revElementMap = new Map<Element, Element>()
 let observer: MutationObserver | null = null
 let selectors: string[] = []
 
+function pushNewElement(element: Element, translateResult: TranslateResultT) {
+  let element1 = makeElement(element, translateResult)
+  elementMap.set(element, element1)
+  revElementMap.set(element1, element)
+  element.insertAdjacentElement("afterend", element1)
+}
+
 async function translateAndPush(element: Element): Promise<void> {
   if(!elementMap.has(element) && !revElementMap.has(element)) {
-    let translateResult = await translate(element.textContent)
-    let element1 = makeElement(element, translateResult)
-    elementMap.set(element, element1)
-    revElementMap.set(element1, element)
-    element.insertAdjacentElement("afterend", element1)
+    let srcText = element.textContent
+    let srcLang = await detectLanguage(srcText)
+    let { language } = await getConfig()
+    if(srcLang !== language){
+      let translateResult = await translate(srcLang, language, srcText)
+      pushNewElement(element, translateResult)
+    }
   }
 }
 
