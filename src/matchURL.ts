@@ -5,7 +5,7 @@ interface Rule {
 }
 
 const rules: Rule[] = [
-  { pattern: "https://www.reddit.com/r/*", selectors: ["p", "h1"] },
+  { pattern: "https://www.reddit.com/r/*", selectors: ["p", "h1", 'a[slot="title"]'] },
   { pattern: "https://www.reddit.com/user/*", selectors: ["p", "h1"] },
   { pattern: "https://www.reddit.com/search/*", selectors: ['a[data-testid="post-title-text"]'] },
   { pattern: "https://www.reddit.com*", selectors: ['a[slot="title"]'] },

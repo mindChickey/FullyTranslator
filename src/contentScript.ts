@@ -1,9 +1,10 @@
 import { Config, getConfig } from "./config"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
-import { cloneElement } from "./utils"
+import { TranslateResultT } from "./types"
+import { makeElement } from "./utils"
 
-function translate(text: string): Promise<string> {
+function translate(text: string): Promise<TranslateResultT> {
   return new Promise((resolve) =>
     chrome.runtime.sendMessage({ kind: 'translate', text }, resolve)
   )
@@ -16,9 +17,8 @@ let selectors: string[] = []
 
 async function translateAndPush(element: Element): Promise<void> {
   if(!elementMap.has(element) && !revElementMap.has(element)) {
-    let translated = await translate(element.textContent)
-    let element1 = cloneElement(element)
-    element1.textContent = translated
+    let translateResult = await translate(element.textContent)
+    let element1 = makeElement(element, translateResult)
     elementMap.set(element, element1)
     revElementMap.set(element1, element)
     element.insertAdjacentElement("afterend", element1)
