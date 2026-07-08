@@ -1,26 +1,12 @@
 import { Config, getConfig } from "./config"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
+import { cloneElement } from "./utils"
 
 function translate(text: string): Promise<string> {
   return new Promise((resolve) =>
     chrome.runtime.sendMessage({ kind: 'translate', text }, resolve)
   )
-}
-
-function copyAllStyles(source: Element, target: HTMLElement) {
-  let styles = window.getComputedStyle(source)
-  Array.from(styles).forEach(key => {
-    target.style.setProperty(key, styles.getPropertyValue(key))
-  })
-}
-
-function cloneElement(element: Element): Element {
-  let element1 = element.cloneNode(true) as HTMLElement
-  element1.removeAttribute('id')
-  copyAllStyles(element, element1)
-  element1.style.backgroundColor = "#e2f0d9"
-  return element1
 }
 
 let elementMap = new Map<Element, Element>()
