@@ -5,7 +5,7 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "watch": "bun build ./src/background.ts ./src/contentScript.ts ./src/popup.ts --outdir ./public --target browser --watch"
+    "watch": "bun build ./src/background.ts ./src/contentScript.ts ./src/popup.ts ./src/options.ts --outdir ./public --target browser --watch"
   },
   "dependencies": {
   },

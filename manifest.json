@@ -8,6 +8,7 @@
     "service_worker": "public/background.js"
   },
   "permissions": ["contextMenus", "storage", "tabs"],
+  "options_page": "options.html",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

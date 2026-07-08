@@ -6,8 +6,9 @@ interface Rule {
 
 const rules: Rule[] = [
   { pattern: "https://www.reddit.com/r/*", selectors: ["p", "h1"] },
-  { pattern: "https://www.reddit.com/*", selectors: ["a[slot=\"title\"]"] },
-  { pattern: "https://lldb.llvm.org/*", selectors: ["p", "h1"] },
+  { pattern: "https://www.reddit.com/user/*", selectors: ["p", "h1"] },
+  { pattern: "https://www.reddit.com*", selectors: ["a[slot=\"title\"]"] },
+  { pattern: "https://lldb.llvm.org*", selectors: ["p", "h1"] },
   { pattern: "https://medium.com*", selectors: ["h2", "h3"] },
   { pattern: "https://www.infoq.cn*", selectors: ["span"] },
   { pattern: "file://*", selectors: ["p"] },
