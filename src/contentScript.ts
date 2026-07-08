@@ -1,14 +1,8 @@
 import { Config, getConfig } from "./config"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
-import { TranslateResultT } from "./types"
+import { translate } from "./translate"
 import { makeElement } from "./utils"
-
-function translate(text: string): Promise<TranslateResultT> {
-  return new Promise((resolve) =>
-    chrome.runtime.sendMessage({ kind: 'translate', text }, resolve)
-  )
-}
 
 let elementMap = new Map<Element, Element>()
 let revElementMap = new Map<Element, Element>()

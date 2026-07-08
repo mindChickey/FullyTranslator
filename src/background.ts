@@ -1,31 +1,5 @@
-import { getConfig, reverseStartup } from "./config"
-import { TranslateResultT } from "./types"
 
-type TranslateFn = (sl: string, tl: string, text: string) => Promise<TranslateResultT>
-
-async function googleTranslate(sl: string, tl: string, text: string): Promise<TranslateResultT> {
-  const args = { client: "gtx", hl: tl, sl, tl, q: text, dj: "1" }
-  const query = new URLSearchParams(args)
-  const url = "https://translate.googleapis.com/translate_a/single?dt=t&dt=bd&dt=qc&dt=rm&dt=ex&" + query.toString()
-  try {
-    const res = await fetch(url, {
-      method: "GET",
-      headers: { 
-        Accept: "text/html,application/xhtml+xml,application/xmlq=0.9,*/*q=0.8",
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0 Win64 x64) AppleWebKit/537.36'
-      }
-    })
-    const t = await res.json()
-    let r =  t.sentences.map((s: { trans: string }) => s.trans).join('')
-    return { succ: true, text: r}
-  } catch(err){
-    return { succ: false, text: "translate failed"}
-  }
-}
-
-const translateMap: Record<string, TranslateFn> = {
-  'google': googleTranslate, 
-}
+import { reverseStartup } from "./config"
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
@@ -44,16 +18,4 @@ chrome.commands.onCommand.addListener(async (command, tab) => {
   if (command === "run-translate"){
     await reverseStartup(tab)
   }
-})
-
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.kind === 'translate') {
-    async function f() {
-      let { translator, language } = await getConfig()
-      const res = await translateMap[translator]( 'auto', language, request.text)
-      sendResponse(res)
-    }
-    f()
-  }
-  return true
 })

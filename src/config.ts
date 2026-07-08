@@ -1,12 +1,11 @@
 
 export type Config = {
-  translator: string
   language: string
   startup: boolean
 }
 
 export const defaultLanguage = 'en'
-export const defaultConfig: Config = { translator: 'google', language: defaultLanguage, startup: true }
+export const defaultConfig: Config = { language: defaultLanguage, startup: true }
 
 export async function getConfig(){
   return chrome.storage.sync.get<Config>(defaultConfig)
@@ -20,9 +19,9 @@ export async function sendTurnMessage(tab: chrome.tabs.Tab | undefined, startup:
 }
 
 export async function reverseStartup(tab: chrome.tabs.Tab | undefined){
-  let { translator, language, startup } = await getConfig()
+  let { language, startup } = await getConfig()
   let newStartup = !startup
-  let config1 = { translator, language, startup: newStartup }
+  let config1 = { language, startup: newStartup }
   await chrome.storage.sync.set(config1)
   await sendTurnMessage(tab, newStartup)
 }
