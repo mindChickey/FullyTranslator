@@ -1,4 +1,4 @@
-import { Config, getConfig } from "./config"
+import { getStartup, getTargetLangage } from "./config"
 import { detectLanguage, initLanguageDetector } from "./langdetect"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
@@ -23,10 +23,10 @@ async function translateAndPush(element: Element): Promise<void> {
     if(!elementMap.has(element) && !revElementMap.has(element)) {
       let srcText = element.textContent
       let srcLang = await detectLanguage(srcText)
-      let { language } = await getConfig()
+      let targetLang = await getTargetLangage()
 
-      if(shouldTranslate(srcLang, language)) {
-        let translateResult = await translate(srcLang, language, srcText)
+      if(shouldTranslate(srcLang, targetLang)) {
+        let translateResult = await translate(srcLang, targetLang, srcText)
         pushNewElement(element, translateResult)
       }
     }
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     observer = newMultiObserve(selectors, translateAndPush)
     await initLanguageDetector()
  
-    let { startup } = await getConfig()
+    let startup = await getStartup()
     if(startup){
       openTranslate()
     }
