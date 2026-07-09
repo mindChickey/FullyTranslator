@@ -1,6 +1,5 @@
 
 # TODO
-  手动修改配置文件
 
 # nextVersion
   用 zod 检查配置
@@ -11,3 +10,4 @@
   等待圈圈
   切换语言
   每个网站是否自动开启
+  options ruleMap 无法删掉默认的

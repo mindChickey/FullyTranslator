@@ -12,9 +12,7 @@ export const defaultRuleMap: RuleMap = {
     { pattern: "/user/*", selectors: ["p", "h1"] },
     { pattern: "/search/*", selectors: ['a[data-testid="post-title-text"]'] },
     { pattern: "*", selectors: ["p", 'a[slot="title"]'] },
-  ],
-  "lldb.llvm.org": [{ pattern: "*", selectors: ["p"] }],
-  "": [{ pattern: "*", selectors: ["p"] }]
+  ]
 }
 
 function matchRegExp(path: string, rule: Rule): boolean {
