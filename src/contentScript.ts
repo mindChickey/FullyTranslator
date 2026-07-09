@@ -4,7 +4,7 @@ import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
 import { translate } from "./translate"
 import { TranslateResultT } from "./types"
-import { makeElement } from "./utils"
+import { makeElement, shouldTranslate } from "./utils"
 
 let elementMap = new Map<Element, Element>()
 let revElementMap = new Map<Element, Element>()
@@ -24,7 +24,8 @@ async function translateAndPush(element: Element): Promise<void> {
       let srcText = element.textContent
       let srcLang = await detectLanguage(srcText)
       let { language } = await getConfig()
-      if(srcLang !== language){
+
+      if(shouldTranslate(srcLang, language)) {
         let translateResult = await translate(srcLang, language, srcText)
         pushNewElement(element, translateResult)
       }

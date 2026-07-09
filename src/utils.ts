@@ -31,3 +31,11 @@ export function makeElement(element: Element, { succ, text }: TranslateResultT){
   element1.textContent = text
   return element1
 }
+
+export function shouldTranslate(srcLang: any, targetLang: any){
+  return (
+    typeof(srcLang) === 'string' && srcLang.length > 0
+    && typeof(targetLang) === 'string' && targetLang.length > 0
+    && srcLang !== targetLang
+  )
+}
