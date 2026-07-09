@@ -1,4 +1,4 @@
-import { getStartup, getTargetLangage } from "./config"
+import { getRuleMap, getStartup, getTargetLangage } from "./config"
 import { detectLanguage, initLanguageDetector } from "./langdetect"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
@@ -69,7 +69,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 document.addEventListener('DOMContentLoaded', async () => {
   let url = window.location.href
-  let matched = matchURL(url)
+  let ruleMap = await getRuleMap()
+  let matched = matchURL(ruleMap, url)
   if (matched) {
     selectors = matched.selectors
     observer = newMultiObserve(selectors, translateAndPush)

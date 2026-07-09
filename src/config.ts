@@ -1,3 +1,4 @@
+import { defaultRuleMap, RuleMap } from "./matchURL"
 
 export async function getTargetLangage(){
   let {language} = await chrome.storage.local.get({language: 'en'})
@@ -14,4 +15,9 @@ export async function reverseStartup(){
   let newStartup = !oldStartup
   await chrome.storage.local.set({ startup: newStartup })
   return newStartup
+}
+
+export async function getRuleMap(){
+  let { ruleMap } = await chrome.storage.local.get({ruleMap: defaultRuleMap})
+  return ruleMap as RuleMap
 }

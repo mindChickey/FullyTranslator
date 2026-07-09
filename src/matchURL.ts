@@ -4,7 +4,7 @@ type Rule = {
   selectors: string[]
 }
 
-type RuleMap = {[domain: string]: Rule[]}
+export type RuleMap = {[domain: string]: Rule[]}
 
 export const defaultRuleMap: RuleMap = {
   "www.reddit.com": [
@@ -24,9 +24,9 @@ function matchRegExp(path: string, rule: Rule): boolean {
   return r
 }
 
-export function matchURL(url: string){
+export function matchURL(ruleMap: RuleMap, url: string){
   let url1 = new URL(url)
-  let rules = defaultRuleMap[url1.host]
+  let rules = ruleMap[url1.host]
   if(!rules){
     return null
   } else {
