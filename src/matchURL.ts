@@ -1,27 +1,35 @@
 
-interface Rule {
+type Rule = {
   pattern: string
   selectors: string[]
 }
 
-const rules: Rule[] = [
-  { pattern: "https://www.reddit.com/r/*", selectors: ["p", "h1", 'a[slot="title"]'] },
-  { pattern: "https://www.reddit.com/user/*", selectors: ["p", "h1"] },
-  { pattern: "https://www.reddit.com/search/*", selectors: ['a[data-testid="post-title-text"]'] },
-  { pattern: "https://www.reddit.com*", selectors: ['a[slot="title"]'] },
-  { pattern: "https://lldb.llvm.org*", selectors: ["p", "h1"] },
-  { pattern: "https://medium.com*", selectors: ["h2", "h3"] },
-  { pattern: "https://www.infoq.cn*", selectors: ["span"] },
-  { pattern: "file://*", selectors: ["p"] },
-]
+type RuleMap = {[domain: string]: Rule[]}
 
-function matchRegExp(url: string, rule: Rule): boolean {
+export const defaultRuleMap: RuleMap = {
+  "www.reddit.com": [
+    { pattern: "/r/*", selectors: ["p", "h1", 'a[slot="title"]'] },
+    { pattern: "/user/*", selectors: ["p", "h1"] },
+    { pattern: "/search/*", selectors: ['a[data-testid="post-title-text"]'] },
+    { pattern: "*", selectors: ["p", 'a[slot="title"]'] },
+  ],
+  "lldb.llvm.org": [{ pattern: "*", selectors: ["p"] }],
+  "": [{ pattern: "*", selectors: ["p"] }]
+}
+
+function matchRegExp(path: string, rule: Rule): boolean {
   const escaped = rule.pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&")
   const re = new RegExp(`^${escaped.replace(/\*/g, ".*")}$`)
-  const r = re.test(url)
+  const r = re.test(path)
   return r
 }
 
 export function matchURL(url: string){
-  return rules.find((rule) => matchRegExp(url, rule))
+  let url1 = new URL(url)
+  let rules = defaultRuleMap[url1.host]
+  if(!rules){
+    return null
+  } else {
+    return rules.find((rule) => matchRegExp(url1.pathname, rule))
+  }
 }
