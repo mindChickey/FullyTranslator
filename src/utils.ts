@@ -33,9 +33,10 @@ export function makeElement(element: Element, { succ, text }: TranslateResultT){
 }
 
 export function shouldTranslate(srcLang: any, targetLang: any){
-  return (
-    typeof(srcLang) === 'string' && srcLang.length > 0
-    && typeof(targetLang) === 'string' && targetLang.length > 0
-    && srcLang !== targetLang
-  )
+  if(typeof(srcLang) === 'string' && srcLang.length > 0){
+    if(typeof(targetLang) === 'string' && targetLang.length > 0){
+      return srcLang.split("-")[0] !== targetLang.split("-")[0]
+    }
+  }
+  return false
 }
