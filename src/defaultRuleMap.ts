@@ -9,3 +9,10 @@ export const defaultRuleMap: RuleMap = {
     { pattern: "*", selectors: ["p", 'a[slot="title"]'] },
   ],
 }
+
+export const commonSelectors = [
+  "h1", "h2", "h3", "h4", "h5", "h6", "p",
+  "li", "dt", "dd",
+  "span", "a", "strong", "em", "small", "time", "bdi", "bdo",
+  "th", "td", "caption"
+]

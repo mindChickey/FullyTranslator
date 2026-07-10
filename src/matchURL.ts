@@ -6,13 +6,6 @@ type Rule = {
 
 export type RuleMap = {[domain: string]: Rule[]}
 
-let commonSelectors = [
-  "h1", "h2", "h3", "h4", "h5", "h6", "p",
-  "li", "dt", "dd",
-  "span", "a", "strong", "em", "small", "time", "bdi", "bdo",
-  "th", "td", "caption"
-]
-
 function matchRegExp(path: string, rule: Rule): boolean {
   const escaped = rule.pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&")
   const re = new RegExp(`^${escaped.replace(/\*/g, ".*")}$`)
