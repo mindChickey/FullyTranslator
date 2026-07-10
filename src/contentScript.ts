@@ -47,7 +47,8 @@ async function translateAndPush(element: Element): Promise<void> {
 // chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // })
 
-function openTranslate() {
+async function openTranslate() {
+  await initLanguageDetector()
   for (const s of selectors) {
     const elements = document.querySelectorAll(s)
     elements.forEach(translateAndPush)
@@ -83,7 +84,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (matched) {
     selectors = matched.selectors
     observer = newMultiObserve(selectors, translateAndPush)
-    await initLanguageDetector()
  
     let startup = await getStartup()
     if(startup){

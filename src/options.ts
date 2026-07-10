@@ -1,4 +1,3 @@
-import { defaultRuleMap } from "./matchURL"
 
 let statusDiv = document.getElementById("status") as HTMLDivElement
 let saveButton = document.getElementById("save") as HTMLButtonElement
@@ -23,7 +22,7 @@ async function saveConfig(): Promise<void> {
 let defaultConfig = {
   language: 'en',
   startup: true,
-  ruleMap: defaultRuleMap
+  ruleMap: {}
 }
 
 async function loadConfig() {

@@ -1,4 +1,5 @@
 import { reverseStartup } from "./config"
+import { defaultRuleMap } from "./matchURL"
 import { sendTurnMessage } from "./sendMessage"
 import { TranslateResultT } from "./types"
 
@@ -22,11 +23,20 @@ async function googleTranslate(sl: string, tl: string, text: string): Promise<Tr
   }
 }
 
-chrome.runtime.onInstalled.addListener(() => {
+let defaultConfig = {
+  language: 'en',
+  startup: true,
+  ruleMap: defaultRuleMap
+}
+
+chrome.runtime.onInstalled.addListener((details) => {
   chrome.contextMenus.create({
     id: "translatePage",
     title: "translate page",
   })
+  if (details.reason === 'install') {
+    chrome.storage.local.set(defaultConfig)
+  }
 })
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
