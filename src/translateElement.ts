@@ -19,7 +19,7 @@ function pushNewElement(element: Element, element1: Element) {
 }
 
 async function handleElement(element: Element) {
-  let srcText = element.textContent
+  let srcText = element.textContent || ""
   let srcLang = await detectLanguage(srcText)
   let targetLang = await getTargetLangage()
 
@@ -30,13 +30,13 @@ async function handleElement(element: Element) {
   }
 }
 
-export async function translateAndPush(element: Element): Promise<void> {
+export async function translateElement(element: Element): Promise<void> {
   try {
     if(!elementMap.has(element) && !revElementMap.has(element)) {
       await handleElement(element)
     }
   } catch(err){
-    console.log("qqqqqqqqqqqqq", err)
+    console.log("translateElement:", err)
   }
 }
 

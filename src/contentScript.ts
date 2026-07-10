@@ -3,7 +3,7 @@ import { commonSelectors } from "./defaultRuleMap"
 import { initLanguageDetector } from "./langdetect"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
-import { clearAll, translateAndPush } from "./translateElement"
+import { clearAll, translateElement } from "./translateElement"
 import { getHost } from "./utils"
 
 let observer: MutationObserver | null = null
@@ -11,7 +11,7 @@ let observer: MutationObserver | null = null
 function startTranslate(selectors: string[]){
   for (const s of selectors) {
     const elements = document.querySelectorAll(s)
-    elements.forEach(translateAndPush)
+    elements.forEach(translateElement)
   }
   if(observer){
     startMultiObserve(observer)
@@ -27,7 +27,7 @@ async function getSelectors(){
 
 async function openTranslate(){
   let selectors = await getSelectors()
-  observer = newMultiObserve(selectors, translateAndPush)
+  observer = newMultiObserve(selectors, translateElement)
   await initLanguageDetector()
   startTranslate(selectors)
 }
