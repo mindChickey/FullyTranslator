@@ -16,24 +16,28 @@ let revElementMap = new Map<Element, Element>()
 let observer: MutationObserver | null = null
 let selectors: string[] = []
 
-function pushNewElement(element: Element, translateResult: TranslateResultT) {
-  let element1 = makeElement(element, translateResult)
+function pushNewElement(element: Element, element1: Element) {
   elementMap.set(element, element1)
   revElementMap.set(element1, element)
   element.insertAdjacentElement("afterend", element1)
 }
 
+async function handleElement(element: Element) {
+  let srcText = element.textContent
+  let srcLang = await detectLanguage(srcText)
+  let targetLang = await getTargetLangage()
+
+  if (shouldTranslate(srcLang, targetLang)) {
+    let translateResult = await translate(srcLang, targetLang, srcText)
+    let element1 = makeElement(element, translateResult)
+    pushNewElement(element, element1)
+  }
+}
+
 async function translateAndPush(element: Element): Promise<void> {
   try {
     if(!elementMap.has(element) && !revElementMap.has(element)) {
-      let srcText = element.textContent
-      let srcLang = await detectLanguage(srcText)
-      let targetLang = await getTargetLangage()
-
-      if(shouldTranslate(srcLang, targetLang)) {
-        let translateResult = await translate(srcLang, targetLang, srcText)
-        pushNewElement(element, translateResult)
-      }
+      await handleElement(element)
     }
   } catch(err){
     console.log("qqqqqqqqqqqqq", err)
