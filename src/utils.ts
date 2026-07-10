@@ -42,3 +42,12 @@ export function shouldTranslate(srcLang: any, targetLang: any, srcText: string){
   }
   return false
 }
+
+export function getHost(url: string | undefined){
+  if(url){
+    let url1 = new URL(url)
+    return url1.host
+  } else {
+    return ""
+  }
+}

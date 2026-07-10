@@ -19,13 +19,8 @@ async function saveConfig(): Promise<void> {
   }
 }
 
-let defaultConfig = {
-  language: 'en',
-  startup: true,
-  ruleMap: {}
-}
-
 async function loadConfig() {
+  let defaultConfig = { language: 'en', ruleMap: {}, openMap: {} }
   let config = await chrome.storage.local.get(defaultConfig)
   editor.value = JSON.stringify(config, null, 2)
 }

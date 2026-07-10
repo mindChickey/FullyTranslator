@@ -1,9 +1,9 @@
-import { getRuleMap, getStartup, getTargetLangage } from "./config"
+import { getRuleMap, getOpen, getTargetLangage } from "./config"
 import { detectLanguage, initLanguageDetector } from "./langdetect"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
 import { TranslateResultT } from "./types"
-import { makeElement, shouldTranslate } from "./utils"
+import { getHost, makeElement, shouldTranslate } from "./utils"
 
 function translate(srcLang: string, targetLang: string, text: string): Promise<TranslateResultT> {
   return new Promise((resolve) =>
@@ -88,8 +88,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let startup = await getStartup()
-  if(startup){
+  let url = window.location.href
+  let host = getHost(url)
+  let open = await getOpen(host)
+  if(open){
     openTranslate()
   }
 })

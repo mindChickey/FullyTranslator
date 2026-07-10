@@ -1,7 +1,8 @@
-import { reverseStartup } from "./config"
-import { defaultRuleMap } from "./matchURL"
+import { reverseOpen } from "./config"
+import { defaultRuleMap } from "./defaultRuleMap"
 import { sendTurnMessage } from "./sendMessage"
 import { TranslateResultT } from "./types"
+import { getHost } from "./utils"
 
 async function googleTranslate(sl: string, tl: string, text: string): Promise<TranslateResultT> {
   const args = { client: "gtx", hl: tl, sl, tl, q: text, dj: "1" }
@@ -25,31 +26,35 @@ async function googleTranslate(sl: string, tl: string, text: string): Promise<Tr
 
 let defaultConfig = {
   language: 'en',
-  startup: true,
-  ruleMap: defaultRuleMap
+  ruleMap: defaultRuleMap,
+  openMap: {}
 }
 
 chrome.runtime.onInstalled.addListener((details) => {
+  chrome.storage.local.set(defaultConfig)
   chrome.contextMenus.create({
     id: "translatePage",
     title: "translate page",
   })
-  if (details.reason === 'install') {
-    chrome.storage.local.set(defaultConfig)
-  }
 })
+
+async function turn(){
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
+  if(!tab) return
+  let host = getHost(tab.url)
+  let open = await reverseOpen(host)
+  await sendTurnMessage(tab, open)
+}
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "translatePage"){
-    let startup = await reverseStartup()
-    await sendTurnMessage(tab, startup)
+    turn()
   }
 })
 
 chrome.commands.onCommand.addListener(async (command, tab) => {
   if (command === "run-translate"){
-    let startup = await reverseStartup()
-    await sendTurnMessage(tab, startup)
+    turn()
   }
 })
 
