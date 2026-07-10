@@ -14,7 +14,6 @@ function translate(srcLang: string, targetLang: string, text: string): Promise<T
 let elementMap = new Map<Element, Element>()
 let revElementMap = new Map<Element, Element>()
 let observer: MutationObserver | null = null
-let selectors: string[] = []
 
 function pushNewElement(element: Element, element1: Element) {
   elementMap.set(element, element1)
@@ -27,7 +26,7 @@ async function handleElement(element: Element) {
   let srcLang = await detectLanguage(srcText)
   let targetLang = await getTargetLangage()
 
-  if (shouldTranslate(srcLang, targetLang)) {
+  if (shouldTranslate(srcLang, targetLang, srcText)) {
     let translateResult = await translate(srcLang, targetLang, srcText)
     let element1 = makeElement(element, translateResult)
     pushNewElement(element, element1)
@@ -47,14 +46,25 @@ async function translateAndPush(element: Element): Promise<void> {
 // chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // })
 
-async function openTranslate() {
-  await initLanguageDetector()
+function startTranslate(selectors: string[]){
   for (const s of selectors) {
     const elements = document.querySelectorAll(s)
     elements.forEach(translateAndPush)
   }
   if(observer){
     startMultiObserve(observer)
+  }
+}
+
+async function openTranslate(){
+  let url = window.location.href
+  let ruleMap = await getRuleMap()
+  let matched = matchURL(ruleMap, url)
+  if (matched) {
+    let selectors = matched.selectors
+    observer = newMultiObserve(selectors, translateAndPush)
+    await initLanguageDetector()
+    startTranslate(selectors)
   }
 }
 
@@ -78,16 +88,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 })
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let url = window.location.href
-  let ruleMap = await getRuleMap()
-  let matched = matchURL(ruleMap, url)
-  if (matched) {
-    selectors = matched.selectors
-    observer = newMultiObserve(selectors, translateAndPush)
- 
-    let startup = await getStartup()
-    if(startup){
-      openTranslate()
-    }
+  let startup = await getStartup()
+  if(startup){
+    openTranslate()
   }
 })

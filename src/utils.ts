@@ -32,10 +32,12 @@ export function makeElement(element: Element, { succ, text }: TranslateResultT){
   return element1
 }
 
-export function shouldTranslate(srcLang: any, targetLang: any){
+export function shouldTranslate(srcLang: any, targetLang: any, srcText: string){
   if(typeof(srcLang) === 'string' && srcLang.length > 0){
     if(typeof(targetLang) === 'string' && targetLang.length > 0){
-      return srcLang.split("-")[0] !== targetLang.split("-")[0]
+      if(srcLang.split("-")[0] !== targetLang.split("-")[0]){
+        return srcText.trim().length > 0
+      }
     }
   }
   return false
