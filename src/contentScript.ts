@@ -8,14 +8,21 @@ import { getHost } from "./utils"
 
 let observer: MutationObserver | null = null
 
-function startTranslate(selectors: string[]){
-  for (const s of selectors) {
-    const elements = document.querySelectorAll(s)
-    elements.forEach(translateElement)
+function make_walk(selectors: string[]) {
+  function walk(el: Element) {
+    if (selectors.some(s => el.matches(s))) {
+      translateElement(el)
+    } else {
+      Array.from(el.children).forEach(walk)
+    }
   }
-  if(observer){
-    startMultiObserve(observer)
-  }
+  return walk
+}
+
+function startTranslate(walk: (el: Element) => void) {
+  walk(document.body)
+  observer = newMultiObserve(walk)
+  startMultiObserve(observer)
 }
 
 async function getSelectors(){
@@ -26,10 +33,10 @@ async function getSelectors(){
 }
 
 async function openTranslate(){
-  let selectors = await getSelectors()
-  observer = newMultiObserve(selectors, translateElement)
   await initLanguageDetector()
-  startTranslate(selectors)
+  let selectors = await getSelectors()
+  let walk = make_walk(selectors)
+  startTranslate(walk)
 }
 
 function closeTranslate(){
