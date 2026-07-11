@@ -24,8 +24,14 @@
       }
     }
   },
-	"action": {
-		"default_title": "Fully Translator",
-		"default_popup": "popup.html"
+  "action": {
+    "default_title": "Fully Translator",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "64": "image/icons8-translate-64.png"
+    }
+  },
+  "icons": {
+    "64": "image/icons8-translate-64.png"
   }
 }
