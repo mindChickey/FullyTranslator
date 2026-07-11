@@ -25,7 +25,7 @@ async function googleTranslate(sl: string, tl: string, text: string): Promise<Tr
 }
 
 let defaultConfig = {
-  language: 'en',
+  language: 'zh-CN',
   ruleMap: defaultRuleMap,
   openMap: {}
 }

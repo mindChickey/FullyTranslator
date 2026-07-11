@@ -20,6 +20,8 @@ function pushNewElement(element: Element, element1: Element) {
 
 async function handleElement(element: Element) {
   let srcText = element.textContent || ""
+  if(srcText.trim().length === 0) return
+
   let srcLang = await detectLanguage(srcText)
   let targetLang = await getTargetLangage()
 

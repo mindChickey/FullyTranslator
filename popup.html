@@ -1,9 +1,128 @@
 <!DOCTYPE html>
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <style type="text/css">
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      background-color: #ffffff;
+      color: #333333;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      padding: 12px;
+      margin: 0;
+      width: 200px;
+    }
+
+    .labeltext {
+      font-weight: 500;
+      color: #666666;
+      margin-bottom: 6px;
+      text-transform: capitalize;
+    }
+
+    select {
+      width: 100%;
+      height: 32px;
+      padding: 0 8px;
+      font-size: 13px;
+      color: #333333;
+      background-color: #f5f5f7;
+      border: 1px solid #e5e5ea;
+      border-radius: 6px;
+      outline: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+
+    select:hover {
+      background-color: #e5e5ea;
+    }
+
+    select:focus {
+      border-color: #007aff;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+    }
+
+    /* 容器：改为垂直列布局 */
+    .frame {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid #f2f2f7;
+    }
+
+    /* 第一行：地址样式 */
+    #hostIndicator {
+      font-size: 11px;
+      color: #8e8e93;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* 第二行：状态指示器容器 */
+    .status-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 状态圆点样式 */
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background-color: transparent;
+      border: 1.5px solid #c7c7cc;
+      transition: all 0.3s ease;
+    }
+
+    .status-dot.active {
+      background-color: #34c759;
+      border-color: #34c759;
+      box-shadow: 0 0 6px rgba(52, 199, 89, 0.6);
+    }
+
+    /* 状态动态文本样式 */
+    #statusText {
+      font-size: 12px;
+      color: #555555;
+    }
+
+    /* 第三行：复选框容器 */
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      cursor: pointer;
+      margin: 0 6px 0 0;
+      width: 14px;
+      height: 14px;
+      accent-color: #007aff;
+    }
+
+    .checkbox-container label {
+      cursor: pointer;
+      font-weight: 500;
+    }
+  </style>
+</head>
 
 <body>
-  <div class="labeltext">target language:</div>
+  <div class="labeltext">target language</div>
   <select id="languageSelect">
     <option value='af'>Afrikaans</option> 
     <option value='sq'>Albanian</option>
@@ -142,7 +261,15 @@
 
   <div class="frame">
     <div id="hostIndicator"></div>
-    <div>
+
+    <!--
+    <div class="status-container">
+      <span id="statusDot" class="status-dot"></span>
+      <span id="statusText">Checking...</span>
+    </div>
+    -->
+
+    <div class="checkbox-container">
       <input id="openCheckBox" type="checkbox"/>
       <label for="openCheckBox">Open</label>
     </div>
@@ -150,23 +277,4 @@
 
   <script src="public/popup.js"></script>
 </body>
-
-<style type="text/css">
-  body {
-    background-color: #FEFEFE;
-    padding: 4px;
-  }
-  .labeltext {
-    margin-bottom: 0.2rem;
-  }
-
-  select {
-    width: 160px;
-  }
-
-  .frame {
-  }
-
-</style>
-
 </html>
