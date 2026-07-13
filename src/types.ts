@@ -13,13 +13,13 @@ const RuleSchema = z.object({
 
 export type RuleT = z.infer<typeof RuleSchema>
 
-const RuleMapSchema = z.record(z.string(), z.array(RuleSchema))
+export const RuleMapSchema = z.record(z.string(), z.array(RuleSchema))
 export type RuleMapT = z.infer<typeof RuleMapSchema>
 
-const OpenMapSchema = z.record(z.string(), z.boolean())
+export const OpenMapSchema = z.record(z.string(), z.boolean())
 export type OpenMapT = z.infer<typeof OpenMapSchema>
 
-const ConfigSchema = z.object({
+export const ConfigSchema = z.object({
   language: z.string(),
   ruleMap: RuleMapSchema,
   openMap: OpenMapSchema

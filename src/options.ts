@@ -1,4 +1,6 @@
-import { ConfigT } from "./types"
+
+import { z } from "zod"
+import { ConfigSchema, ConfigT } from "./types"
 
 let statusDiv = document.getElementById("status") as HTMLDivElement
 let saveButton = document.getElementById("save") as HTMLButtonElement
@@ -12,6 +14,7 @@ function showMessage(text: string, isErr: boolean): void {
 async function saveConfig(): Promise<void> {
   try {
     let config = JSON.parse(editor.value)
+    z.parse(ConfigSchema, config)
     await chrome.storage.local.set(config)
     showMessage('Configuration saved successfully.', false)
   } catch (err) {
