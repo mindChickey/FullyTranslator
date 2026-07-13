@@ -8,6 +8,7 @@
     "watch": "bun build ./src/background.ts ./src/contentScript.ts ./src/popup.ts ./src/options.ts --outdir ./public --target browser --watch"
   },
   "dependencies": {
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/bun": "^1.2.23",

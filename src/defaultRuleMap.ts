@@ -1,7 +1,6 @@
+import { RuleMapT } from "./types"
 
-import { RuleMap } from "./matchURL";
-
-export const defaultRuleMap: RuleMap = {
+export const defaultRuleMap: RuleMapT = {
   "www.reddit.com": [
     { pattern: "/r/*", selectors: ["p", "h1", 'a[slot="title"]'] },
     { pattern: "/user/*", selectors: ["p", "h1"] },

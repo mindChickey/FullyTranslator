@@ -1,3 +1,4 @@
+import { ConfigT } from "./types"
 
 let statusDiv = document.getElementById("status") as HTMLDivElement
 let saveButton = document.getElementById("save") as HTMLButtonElement
@@ -20,7 +21,7 @@ async function saveConfig(): Promise<void> {
 }
 
 async function loadConfig() {
-  let defaultConfig = { language: 'en', ruleMap: {}, openMap: {} }
+  let defaultConfig: ConfigT = { language: 'en', ruleMap: {}, openMap: {} }
   let config = await chrome.storage.local.get(defaultConfig)
   editor.value = JSON.stringify(config, null, 2)
 }

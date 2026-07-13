@@ -1,7 +1,7 @@
 import { reverseOpen } from "./config"
 import { defaultRuleMap } from "./defaultRuleMap"
 import { sendTurnMessage } from "./sendMessage"
-import { TranslateResultT } from "./types"
+import { ConfigT, TranslateResultT } from "./types"
 import { getHost } from "./utils"
 
 async function googleTranslate(sl: string, tl: string, text: string): Promise<TranslateResultT> {
@@ -24,7 +24,7 @@ async function googleTranslate(sl: string, tl: string, text: string): Promise<Tr
   }
 }
 
-let defaultConfig = {
+let defaultConfig: ConfigT = {
   language: 'zh-CN',
   ruleMap: defaultRuleMap,
   openMap: {}
