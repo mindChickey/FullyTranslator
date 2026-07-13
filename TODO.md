@@ -1,6 +1,5 @@
 
 # TODO
-  用 zod 检查配置
 
 # nextVersion
   加载 AI 模型
