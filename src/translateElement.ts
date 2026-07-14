@@ -1,14 +1,17 @@
 import { getTargetLangage } from "./config"
 import { detectLanguage } from "./langdetect"
-import { makeElement, shouldTranslate, translate } from "./utils"
+import { makeElement } from "./makeElement"
+import { shouldTranslate, translate } from "./utils"
 
 let elementMap = new Map<Element, Element>()
-let revElementMap = new Map<Element, Element>()
 
-function pushNewElement(element: Element, element1: Element) {
-  elementMap.set(element, element1)
-  revElementMap.set(element1, element)
-  element.insertAdjacentElement("afterend", element1)
+async function translateAndPush(element: Element, srcLang: any, targetLang: string, srcText: string) {
+  if (shouldTranslate(srcLang, targetLang, srcText)) {
+    let translateResult = await translate(srcLang, targetLang, srcText)
+    let element1 = makeElement(element, translateResult)
+    elementMap.set(element, element1)
+    element.appendChild(element1)
+  }
 }
 
 async function handleElement(element: Element) {
@@ -18,16 +21,12 @@ async function handleElement(element: Element) {
   let srcLang = await detectLanguage(srcText)
   let targetLang = await getTargetLangage()
 
-  if (shouldTranslate(srcLang, targetLang, srcText)) {
-    let translateResult = await translate(srcLang, targetLang, srcText)
-    let element1 = makeElement(element, translateResult)
-    pushNewElement(element, element1)
-  }
+  await translateAndPush(element, srcLang, targetLang, srcText)
 }
 
 export async function translateElement(element: Element): Promise<void> {
   try {
-    if(!elementMap.has(element) && !revElementMap.has(element)) {
+    if(!elementMap.has(element)) {
       await handleElement(element)
     }
   } catch(err){
@@ -36,9 +35,8 @@ export async function translateElement(element: Element): Promise<void> {
 }
 
 export function clearAll(){
-  for (const el of revElementMap.keys()) {
+  for (const el of elementMap.values()) {
     el.remove()
   }
   elementMap.clear()
-  revElementMap.clear()
 }

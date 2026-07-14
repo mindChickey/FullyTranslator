@@ -8,8 +8,8 @@
     "jsx": "react",
     "jsxFactory": "createElement",
 
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
