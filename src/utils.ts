@@ -1,5 +1,11 @@
 import { TranslateResultT } from "./types"
 
+export function translate(srcLang: string, targetLang: string, text: string): Promise<TranslateResultT> {
+  return new Promise((resolve) =>
+    chrome.runtime.sendMessage({ kind: 'translate', srcLang, targetLang, text }, resolve)
+  )
+}
+
 function copyAllStyles(source: Element, target: HTMLElement) {
   let styles = window.getComputedStyle(source)
   Array.from(styles).forEach(key => {
@@ -15,7 +21,7 @@ function cloneElement(element: Element): Element {
   return element1
 }
 
-function makeErrorElement() {
+function makeErrorElement(element: Element, translateResult: TranslateResultT) {
   let element1 = document.createElement("div")
   element1.style.backgroundColor = "#f1dada"
   element1.style.color = "#ef0505"
@@ -23,13 +29,28 @@ function makeErrorElement() {
   element1.style.padding = "2px 8px"
   element1.style.borderRadius = "12px"
   element1.style.fontSize = "12px"
+  element1.style.cursor = "pointer"
+
+  element1.onclick = async () => {
+    let { srcLang, targetLang, srcText } = translateResult
+    let translateResult1 = await translate(srcLang, targetLang, srcText)
+    let element2 = makeElement(element, translateResult1)
+    element1.replaceWith(element2)
+  }
   return element1
 }
 
-export function makeElement(element: Element, { succ, text }: TranslateResultT){
-  let element1 = succ ? cloneElement(element) : makeErrorElement()
-  element1.textContent = text
-  return element1
+export function makeElement(element: Element, translateResult: TranslateResultT){
+  let { succ, targetText } = translateResult
+  if(succ){
+    let element1 = cloneElement(element)
+    element1.textContent = targetText
+    return element1
+  } else {
+    let element1 = makeErrorElement(element, translateResult)
+    element1.textContent = targetText + " ↻"
+    return element1
+  }
 }
 
 export function shouldTranslate(srcLang: any, targetLang: any, srcText: string){

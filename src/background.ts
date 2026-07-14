@@ -17,10 +17,10 @@ async function googleTranslate(sl: string, tl: string, text: string): Promise<Tr
       }
     })
     const t = await res.json()
-    let r =  t.sentences.map((s: { trans: string }) => s.trans).join('')
-    return { succ: true, text: r}
+    let targetText =  t.sentences.map((s: { trans: string }) => s.trans).join('')
+    return { succ: true, srcLang: sl, targetLang: tl, srcText: text, targetText}
   } catch(err){
-    return { succ: false, text: "translate failed"}
+    return { succ: false, srcLang: sl, targetLang: tl, srcText: text, targetText: "translate failed"}
   }
 }
 

@@ -3,7 +3,10 @@ import { z } from "zod"
 
 export type TranslateResultT = {
   succ: boolean
-  text: string
+  srcLang: string
+  targetLang: string
+  srcText: string
+  targetText: string
 }
 
 const RuleSchema = z.object({

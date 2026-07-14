@@ -1,13 +1,6 @@
 import { getTargetLangage } from "./config"
 import { detectLanguage } from "./langdetect"
-import { TranslateResultT } from "./types"
-import { makeElement, shouldTranslate } from "./utils"
-
-function translate(srcLang: string, targetLang: string, text: string): Promise<TranslateResultT> {
-  return new Promise((resolve) =>
-    chrome.runtime.sendMessage({ kind: 'translate', srcLang, targetLang, text }, resolve)
-  )
-}
+import { makeElement, shouldTranslate, translate } from "./utils"
 
 let elementMap = new Map<Element, Element>()
 let revElementMap = new Map<Element, Element>()
