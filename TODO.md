@@ -1,6 +1,5 @@
 
 # TODO
-  样式
   popup Open 点击范围
   reddit 用户 karma
 
