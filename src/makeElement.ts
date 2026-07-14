@@ -6,22 +6,22 @@ import { translate } from "./utils"
 
 export let elementMap = new Map<Element, Element>()
 
-function makeSuccElement(targetText: string): Element {
+function makeSuccElement(targetLines: string[]): Element {
   let element1 = document.createElement("translate-text")
-  element1.textContent = targetText
+  element1.textContent = targetLines.join("\n")
   return element1
 }
 
 function makeErrorElement(element: Element, translateResult: TranslateResultT) {
-  let { srcLang, targetLang, srcText, targetText } = translateResult
+  let { srcLang, targetLang, srcText, targetLines } = translateResult
 
   let element1 = document.createElement("translate-fail")
-  element1.textContent = targetText + " ↻"
+  element1.textContent = "Translate Failed ↻"
   element1.onclick = async () => {
     let translateResult1 = await translate(srcLang, targetLang, srcText)
-    let { succ, targetText } = translateResult1
+    let { succ, targetLines } = translateResult1
     if(succ){
-      let element2 = makeSuccElement(targetText)
+      let element2 = makeSuccElement(targetLines)
       elementMap.set(element, element2)
       element1.replaceWith(element2)
     }
@@ -30,9 +30,9 @@ function makeErrorElement(element: Element, translateResult: TranslateResultT) {
 }
 
 export function makeElement(element: Element, translateResult: TranslateResultT){
-  let { succ, targetText } = translateResult
+  let { succ, targetLines } = translateResult
   if(succ){
-    return makeSuccElement(targetText)
+    return makeSuccElement(targetLines)
   } else {
     return makeErrorElement(element, translateResult)
   }
