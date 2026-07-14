@@ -6,23 +6,18 @@ export function translate(srcLang: string, targetLang: string, text: string): Pr
   )
 }
 
-function copyAllStyles(source: Element, target: HTMLElement) {
-  let styles = window.getComputedStyle(source)
-  Array.from(styles).forEach(key => {
-    target.style.setProperty(key, styles.getPropertyValue(key))
-  })
-}
-
-function cloneElement(element: Element): Element {
-  let element1 = element.cloneNode(true) as HTMLElement
-  element1.removeAttribute('id')
-  copyAllStyles(element, element1)
+function makeSuccElement(targetText: string): Element {
+  let element1 = document.createElement("translate-text")
+  element1.textContent = targetText
   element1.style.backgroundColor = "#e2f0d9"
   return element1
 }
 
 function makeErrorElement(element: Element, translateResult: TranslateResultT) {
+  let { srcLang, targetLang, srcText, targetText } = translateResult
+
   let element1 = document.createElement("div")
+  element1.textContent = targetText + " ↻"
   element1.style.backgroundColor = "#f1dada"
   element1.style.color = "#ef0505"
   element1.style.display = "inline-block"
@@ -32,7 +27,6 @@ function makeErrorElement(element: Element, translateResult: TranslateResultT) {
   element1.style.cursor = "pointer"
 
   element1.onclick = async () => {
-    let { srcLang, targetLang, srcText } = translateResult
     let translateResult1 = await translate(srcLang, targetLang, srcText)
     let element2 = makeElement(element, translateResult1)
     element1.replaceWith(element2)
@@ -43,13 +37,9 @@ function makeErrorElement(element: Element, translateResult: TranslateResultT) {
 export function makeElement(element: Element, translateResult: TranslateResultT){
   let { succ, targetText } = translateResult
   if(succ){
-    let element1 = cloneElement(element)
-    element1.textContent = targetText
-    return element1
+    return makeSuccElement(targetText)
   } else {
-    let element1 = makeErrorElement(element, translateResult)
-    element1.textContent = targetText + " ↻"
-    return element1
+    return makeErrorElement(element, translateResult)
   }
 }
 
