@@ -1,9 +1,7 @@
 import { getTargetLangage } from "./config"
 import { detectLanguage } from "./langdetect"
-import { makeElement } from "./makeElement"
+import { elementMap, makeElement } from "./makeElement"
 import { shouldTranslate, translate } from "./utils"
-
-let elementMap = new Map<Element, Element>()
 
 async function translateAndPush(element: Element, srcLang: any, targetLang: string, srcText: string) {
   if (shouldTranslate(srcLang, targetLang, srcText)) {

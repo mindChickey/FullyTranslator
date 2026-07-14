@@ -2,7 +2,6 @@
 # TODO
   样式
   popup Open 点击范围
-  替换 element1.replaceWith
   断句
 
 # nextVersion

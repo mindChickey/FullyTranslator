@@ -1,9 +1,10 @@
 
+// @ts-ignore
+import styleContent from "./style.css" with { type: "text" };
 import { TranslateResultT } from "./types"
 import { translate } from "./utils"
 
-// @ts-ignore
-import styleContent from "./style.css" with { type: "text" };
+export let elementMap = new Map<Element, Element>()
 
 function makeSuccElement(targetText: string): Element {
   let element1 = document.createElement("translate-text")
@@ -18,8 +19,12 @@ function makeErrorElement(element: Element, translateResult: TranslateResultT) {
   element1.textContent = targetText + " ↻"
   element1.onclick = async () => {
     let translateResult1 = await translate(srcLang, targetLang, srcText)
-    let element2 = makeElement(element, translateResult1)
-    element1.replaceWith(element2)
+    let { succ, targetText } = translateResult1
+    if(succ){
+      let element2 = makeSuccElement(targetText)
+      elementMap.set(element, element2)
+      element1.replaceWith(element2)
+    }
   }
   return element1
 }
