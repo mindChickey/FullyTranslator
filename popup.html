@@ -49,7 +49,6 @@
       box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
     }
 
-    /* 容器：改为垂直列布局 */
     .frame {
       display: flex;
       flex-direction: column;
@@ -58,7 +57,6 @@
       border-top: 1px solid #f2f2f7;
     }
 
-    /* 第一行：地址样式 */
     #hostIndicator {
       font-size: 11px;
       color: #8e8e93;
@@ -67,14 +65,12 @@
       white-space: nowrap;
     }
 
-    /* 第二行：状态指示器容器 */
     .status-container {
       display: flex;
       align-items: center;
       gap: 6px;
     }
 
-    /* 状态圆点样式 */
     .status-dot {
       display: inline-block;
       width: 8px;
@@ -92,29 +88,24 @@
       box-shadow: 0 0 6px rgba(52, 199, 89, 0.6);
     }
 
-    /* 状态动态文本样式 */
     #statusText {
       font-size: 12px;
       color: #555555;
     }
 
-    /* 第三行：复选框容器 */
     .checkbox-container {
       display: flex;
       align-items: center;
-      cursor: pointer;
       user-select: none;
     }
 
     .checkbox-container input[type="checkbox"] {
       cursor: pointer;
-      margin: 0 6px 0 0;
-      width: 14px;
-      height: 14px;
       accent-color: #007aff;
     }
 
     .checkbox-container label {
+      padding-left: 4px;
       cursor: pointer;
       font-weight: 500;
     }
