@@ -6,13 +6,23 @@ export function translate(targetLang: string, text: string): Promise<TranslateRe
   )
 }
 
-export function shouldTranslate(srcLang: any, targetLang: any, srcText: string){
+export async function detectLanguage(text: string) {
+  let result = await chrome.i18n.detectLanguage(text)
+  if (!result || !result.isReliable || result.languages.length === 0) {
+    return ""
+  } else {
+    const topLang = result.languages[0]
+    return topLang.percentage > 50 ? topLang.language : ""
+  }
+}
+
+export function shouldTranslate(srcLang: any, targetLang: any){
   if(typeof(srcLang) === 'string' && srcLang.length > 0){
     if(typeof(targetLang) === 'string' && targetLang.length > 0){
       return srcLang.split("-")[0] !== targetLang.split("-")[0]
     }
   }
-  return false
+  return true
 }
 
 export function getHost(url: string | undefined){

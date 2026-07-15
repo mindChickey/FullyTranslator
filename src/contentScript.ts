@@ -1,6 +1,5 @@
 import { getRuleMap, getOpen } from "./config"
 import { commonSelectors } from "./defaultRuleMap"
-import { initLanguageDetector } from "./langdetect"
 import { initStyleElement } from "./makeElement"
 import { matchURL } from "./matchURL"
 import { newMultiObserve, startMultiObserve } from "./observe"
@@ -34,7 +33,6 @@ async function getSelectors(){
 }
 
 async function openTranslate(){
-  await initLanguageDetector()
   initStyleElement()
 
   let selectors = await getSelectors()

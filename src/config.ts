@@ -1,9 +1,9 @@
 
 import { z } from "zod"
-import { OpenMapSchema, OpenMapT, RuleMapSchema, RuleMapT } from "./types"
+import { OpenMapSchema, RuleMapSchema } from "./types"
 
 export async function getTargetLangage(){
-  let { language } = await chrome.storage.local.get({language: 'en'})
+  let { language } = await chrome.storage.local.get('language')
   return z.parse(z.string(), language)
 }
 
