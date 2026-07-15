@@ -5,9 +5,11 @@ import { detectLanguage, shouldTranslate, translate } from "./utils"
 async function translateAndPush(element: Element, srcLang: any, targetLang: string, srcText: string) {
   if (shouldTranslate(srcLang, targetLang)) {
     let translateResult = await translate(targetLang, srcText)
-    let element1 = makeElement(element, translateResult)
-    elementMap.set(element, element1)
-    element.appendChild(element1)
+    if(translateResult.srcLang !== targetLang){
+      let element1 = makeElement(element, translateResult)
+      elementMap.set(element, element1)
+      element.appendChild(element1)
+    }
   }
 }
 

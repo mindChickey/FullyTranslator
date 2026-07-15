@@ -3,6 +3,7 @@ import { z } from "zod"
 
 export type TranslateResultT = {
   succ: boolean
+  srcLang: string
   srcText: string
   targetLines: string[]
 }
