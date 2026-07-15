@@ -4,8 +4,8 @@ import { sendTurnMessage } from "./sendMessage"
 import { ConfigT, TranslateResultT } from "./types"
 import { getHost } from "./utils"
 
-async function googleTranslate(sl: string, tl: string, text: string): Promise<TranslateResultT> {
-  const args = { client: "gtx", hl: tl, sl, tl, q: text, dj: "1" }
+async function googleTranslate(tl: string, text: string): Promise<TranslateResultT> {
+  const args = { client: "gtx", hl: tl, sl: "auto", tl, q: text, dj: "1" }
   const query = new URLSearchParams(args)
   const url = "https://translate.googleapis.com/translate_a/single?dt=t&dt=bd&dt=qc&dt=rm&dt=ex&" + query.toString()
   try {
@@ -18,9 +18,9 @@ async function googleTranslate(sl: string, tl: string, text: string): Promise<Tr
     })
     const t = await res.json()
     let targetLines =  t.sentences.map((s: { trans: string }) => s.trans).filter((s: string) => s)
-    return { succ: true, srcLang: sl, targetLang: tl, srcText: text, targetLines}
+    return { succ: true, srcText: text, targetLines}
   } catch(err: any){
-    return { succ: false, srcLang: sl, targetLang: tl, srcText: text, targetLines: [err.toString()]}
+    return { succ: false, srcText: text, targetLines: [err.toString()]}
   }
 }
 
@@ -62,8 +62,8 @@ chrome.commands.onCommand.addListener(async (command, tab) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.kind === 'translate') {
     async function f() {
-      let { srcLang, targetLang, text } = request
-      const res = await googleTranslate(srcLang, targetLang, text)
+      let { targetLang, text } = request
+      const res = await googleTranslate(targetLang, text)
       sendResponse(res)
     }
     f()

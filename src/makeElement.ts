@@ -1,8 +1,9 @@
 
 // @ts-ignore
-import styleContent from "./style.css" with { type: "text" };
+import styleContent from "./style.css" with { type: "text" }
 import { TranslateResultT } from "./types"
 import { translate } from "./utils"
+import { getTargetLangage } from "./config"
 
 export let elementMap = new Map<Element, Element>()
 
@@ -13,12 +14,13 @@ function makeSuccElement(targetLines: string[]): Element {
 }
 
 function makeErrorElement(element: Element, translateResult: TranslateResultT) {
-  let { srcLang, targetLang, srcText, targetLines } = translateResult
-
   let element1 = document.createElement("translate-fail")
   element1.textContent = "Translate Failed ↻"
   element1.onclick = async () => {
-    let translateResult1 = await translate(srcLang, targetLang, srcText)
+    let { srcText } = translateResult
+    let targetLang = await getTargetLangage()
+
+    let translateResult1 = await translate(targetLang, srcText)
     let { succ, targetLines } = translateResult1
     if(succ){
       let element2 = makeSuccElement(targetLines)

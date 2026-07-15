@@ -1,11 +1,11 @@
-
 {
   "name": "Fully Translator",
   "version": "1.0.0",
   "manifest_version": 3,
   "description": "Quickly translate fully page",
   "background": {
-    "service_worker": "public/background.js"
+    "service_worker": "public/background.js",
+    "scripts": ["public/background.js"]
   },
   "permissions": ["contextMenus", "storage", "tabs"],
   "options_page": "options.html",
@@ -33,5 +33,10 @@
   },
   "icons": {
     "64": "image/icons8-translate-64.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "veequest@163.com"
+    }
   }
 }

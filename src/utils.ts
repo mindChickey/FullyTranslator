@@ -1,8 +1,8 @@
 import { TranslateResultT } from "./types"
 
-export function translate(srcLang: string, targetLang: string, text: string): Promise<TranslateResultT> {
+export function translate(targetLang: string, text: string): Promise<TranslateResultT> {
   return new Promise((resolve) =>
-    chrome.runtime.sendMessage({ kind: 'translate', srcLang, targetLang, text }, resolve)
+    chrome.runtime.sendMessage({ kind: 'translate', targetLang, text }, resolve)
   )
 }
 
