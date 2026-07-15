@@ -13,7 +13,8 @@ async function translateAndPush(element: Element, srcLang: any, targetLang: stri
 }
 
 async function handleElement(element: Element) {
-  let srcText = element.textContent || ""
+  let srcText = element instanceof HTMLElement ? element.innerText : element.textContent
+  if(typeof srcText !== 'string') return
   if(srcText.trim().length === 0) return
 
   let srcLang = await detectLanguage(srcText)
