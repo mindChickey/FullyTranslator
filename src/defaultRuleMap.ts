@@ -10,6 +10,7 @@ export const defaultRuleMap: RuleMapT = {
       "a.text-neutral-content-strong.font-normal.a"
     ] },
     { pattern: "/search/*", selectors: ['a[data-testid="post-title-text"]', "faceplate-screen-reader-content"] },
+    { pattern: "/notifications*", selectors: [".line-clamp-2"] },
     { pattern: "*", selectors: ["p", 'a[slot="title"]'] },
   ],
 }
