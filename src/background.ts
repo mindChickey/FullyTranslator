@@ -5,7 +5,7 @@ import { ConfigT, TranslateResultT } from "./types"
 import { getHost } from "./utils"
 
 async function googleTranslate(tl: string, text: string): Promise<TranslateResultT> {
-  const args = { client: "dict-chrome-ex", hl: tl, sl: "auto", tl, q: text, dj: "1" }
+  const args = { client: "gtx", hl: tl, sl: "auto", tl, q: text, dj: "1" }
   const query = new URLSearchParams(args)
   const url = "https://translate.googleapis.com/translate_a/single?dt=t&dt=bd&dt=qc&dt=rm&dt=ex&" + query.toString()
   try {
