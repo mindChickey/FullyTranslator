@@ -17,10 +17,10 @@ function makeErrorElement(element: Element, translateResult: TranslateResultT) {
   let element1 = document.createElement("translate-fail")
   element1.textContent = "Translate Failed ↻"
   element1.onclick = async () => {
-    let { srcText } = translateResult
+    let { srcText, srcLang } = translateResult
     let targetLang = await getTargetLangage()
 
-    let translateResult1 = await translate(targetLang, srcText)
+    let translateResult1 = await translate(srcLang, targetLang, srcText)
     let { succ, targetLines } = translateResult1
     if(succ){
       let element2 = makeSuccElement(targetLines)

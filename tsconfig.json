@@ -18,8 +18,8 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "types": ["chrome", "bun"] 
   },
   "include": [
     "**/*.ts",
