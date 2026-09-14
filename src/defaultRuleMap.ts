@@ -2,7 +2,7 @@ import { RuleMapT } from "./types"
 
 export const defaultRuleMap: RuleMapT = {
   "www.reddit.com": [
-    { pattern: "/r/*", selectors: ["p", "h1", 'a[slot="title"]', 'a.absolute'] },
+    { pattern: "/r/*", selectors: ["p", "h1", 'a[slot="title"]'] },
     { pattern: "/user/*", selectors: [
       'a[slot="title"]',
       "div.text-neutral-content-strong.overflow-hidden",
