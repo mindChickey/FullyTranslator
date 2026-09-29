@@ -8,9 +8,16 @@ import { getHost } from "./utils"
 
 let observer: MutationObserver | null = null
 
+function setGreenBorder(el: Element): void {
+  if (el instanceof HTMLElement) {
+   el.style.border = '2px solid green';
+  }
+}
+
 function make_walk(selectors: string[]) {
   function walk(el: Element) {
     if (selectors.some(s => el.matches(s))) {
+      // setGreenBorder(el)
       translateElement(el)
     } else {
       Array.from(el.children).forEach(walk)

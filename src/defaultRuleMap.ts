@@ -24,6 +24,9 @@ export const defaultRuleMap: RuleMapT = {
     { pattern: "/jobs", selectors: ["td.title"] },
     { pattern: "/newcomments", selectors: ["div.comment"] },
     { pattern: "/item*", selectors: ["td.title", "div.comment", "div.toptext"] },
+  ],
+  "github.com": [
+    { pattern: "/*/*", selectors: ["p", "article li", "article .heading-element"] },
   ]
 }
 
