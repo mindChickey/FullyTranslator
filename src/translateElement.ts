@@ -1,10 +1,11 @@
+import { cacheTranslate } from "./cacheTranslate"
 import { getTargetLangage } from "./config"
 import { elementMap, makeElement } from "./makeElement"
-import { detectLanguage, shouldTranslate, translate } from "./utils"
+import { detectLanguage, shouldTranslate } from "./utils"
 
 async function translateAndPush(element: Element, srcLang: any, targetLang: string, srcText: string) {
   if (shouldTranslate(srcLang, targetLang)) {
-    let translateResult = await translate(srcLang, targetLang, srcText)
+    let translateResult = await cacheTranslate(srcLang, targetLang, srcText)
     if(translateResult.srcLang !== targetLang){
       let element1 = makeElement(element, translateResult)
       elementMap.set(element, element1)

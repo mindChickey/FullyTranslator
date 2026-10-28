@@ -6,6 +6,7 @@ export type TranslateResultT = {
   srcLang: string
   srcText: string
   targetLines: string[]
+  isCache: boolean
 }
 
 const RuleSchema = z.object({

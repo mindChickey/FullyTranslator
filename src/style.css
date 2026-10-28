@@ -29,3 +29,7 @@ translate-fail{
   transition: all 0.2s ease;
   user-select: none;
 }
+
+.cache {
+  background-color: #9dd6e4
+}

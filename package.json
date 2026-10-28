@@ -8,10 +8,12 @@
     "watch": "bun build ./src/background.ts ./src/contentScript.ts ./src/popup.ts ./src/options.ts --outdir ./public --target browser --watch"
   },
   "dependencies": {
+    "xxhashjs": "^0.2.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/bun": "^1.2.23",
-    "@types/chrome": "^0.1.19"
+    "@types/chrome": "^0.1.19",
+    "@types/xxhashjs": "^0.2.4"
   }
 }
